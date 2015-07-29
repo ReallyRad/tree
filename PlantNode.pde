@@ -1,8 +1,8 @@
 class PlantNode {  
-  float x;
-  float y;
-  float direction;
-  int id;
+  
+  public float x;
+  public float y;
+  public float direction;
   
   PlantNode(float x, float y, float d) {
     this.x = x;
@@ -15,12 +15,15 @@ class PlantNode {
   }
   
   void draw() {
-    fill(0);
-    stroke(255);
+    fill(195);
+    stroke(155);
     ellipse(x, y, 10, 10);
     if (debug == true) {
-      line(x, y, x+internode*cos(direction), y+internode*sin(direction));
-    }    
+      stroke(255,0,0);
+      line(x, y, x+0.5*internode*cos(direction), y+0.5*internode*sin(direction)); //draw node direction
+      stroke (155);      
+    }
+    
   }
   
 }
