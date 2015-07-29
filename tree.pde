@@ -1,72 +1,75 @@
-TreeNode<String> root;
-TreeNode<String> example;
-
 int lastTime;
-int interval = 2000;
-int internode = 5;
+int interval;
+int internode;
+boolean debug;
 
-ArrayList<PlantNode> plantList;
-ArrayList<TreeNode> treeList;
+TreeNode<PlantNode> root;
 
-void setup() {  
-  //root = new TreeNode<String>("root");
-  example = getSet1();
-  plantList = new ArrayList<PlantNode>();
-  plantList.add(new PlantNode(width/2, 0, PI));
-  treeList = new ArrayList<TreeNode>();
-  treeList.add(new TreeNode());
-  root = 
+void setup() {      
+  size(1366/2, 768);
+  debug = false;
 }
 
 void draw() {
-  
-  if ((millis()-lastTime)<interval) {
-    lastTime = millis();
-    
-  }
-  
-  root = new PlantNode
+  interval = 2000;
+  internode = 50;
+  background(195);
+  root = getSet();  
+  for (TreeNode<PlantNode> node : root) {  
+    node.data.draw();
+  }   
   
 }
 
 void grow(){
 
-}
+} 
+
+  TreeNode<PlantNode> getSet() {
+    TreeNode<PlantNode> root = new TreeNode<PlantNode>(new PlantNode(width/2, 0, PI/2));
+    
+    
+      TreeNode<PlantNode> node0 = grow(root, PI/2-PI/6);
+      TreeNode<PlantNode> node1 = grow(root, PI/2+PI/6);      
+      {
+        TreeNode<PlantNode> node20 = grow(node1, -PI/2-PI/6);        
+        {
+          TreeNode<PlantNode> node210 = grow(node20, PI/2-PI/6);
+          TreeNode<PlantNode> node211 = grow(node20, PI/2-PI/6);
+        }
+      }
+      TreeNode<PlantNode> node3 = grow(root, PI/2-PI/4);
+      {
+        TreeNode<PlantNode> node30 = grow(node3, PI/2-PI/4);
+      }
+    
+  return root;
+  }
+
+  TreeNode<PlantNode> grow(TreeNode<PlantNode> t, float d) {    
+    float direction = t.getData().direction;
+    float x = t.getData().x;
+    float y = t.getData().y;
+    //PVector position = new PVector(t.getData().position.x,t.getData().position.y);   
+    //PlantNode plantnode = new PlantNode(width/2, 0, -PI/2);
+    PlantNode plantnode = new PlantNode(x+cos(direction)*internode, y+sin(direction)*internode, d);
+    return t.addChild(plantnode);
+  }
+  /*
+  void split(int d) {
+    float newDirection = random(PI/4.0, PI/2.0);
+    new PlantNode(position.x+cos(direction+newDirection)*internode, position.y+cos(direction+newDirection)*internode, d);
+    new PlantNode(position.x+cos(direction-newDirection)*internode, position.y+cos(direction-newDirection)*internode, d);
+  }
+*/
 /*
   for (TreeNode<String> node : treeRoot) {
-      String indent = createIndent(node.getLevel());
+        String indent = createIndent(node.getLevel());
       System.out.println(indent + node.data);
     }
 */
 
-private static String createIndent(int depth) {
-  StringBuilder sb = new StringBuilder();
-  for (int i = 0; i < depth; i++) {
-    sb.append(' ');
-  }
-  return sb.toString();
+void keyPressed() {
+  if (key == 'd' || key == 'D') debug = !debug;  
 }
 
-
-public static TreeNode<String> getSet1() {
-  TreeNode<String> root = new TreeNode<String>("root");
-  {
-    TreeNode<String> node0 = root.addChild("node0");
-    TreeNode<String> node1 = root.addChild("node1");
-    TreeNode<String> node2 = root.addChild("node2");
-    {
-      TreeNode<String> node20 = node2.addChild(null);
-      TreeNode<String> node21 = node2.addChild("node21");
-      {
-        TreeNode<String> node210 = node21.addChild("node210");
-        TreeNode<String> node211 = node21.addChild("node211");
-      }
-    }
-    TreeNode<String> node3 = root.addChild("node3");
-    {
-      TreeNode<String> node30 = node3.addChild("node30");
-    }
-  }
-
-  return root;
-}

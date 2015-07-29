@@ -8,7 +8,11 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
   public TreeNode<T> parent;
   public List<TreeNode<T>> children;
 
-  public boolean isRoot() {
+  public T getData() {
+    return data;
+  }
+
+  public boolean isRoot() { 
     return parent == null;
   }
 
