@@ -10,31 +10,29 @@ class PlantNode {
     direction = d;    
   }
   
-void setDirection() {
+void setDirection(float d) { //set direction given direction of previous node
   rect(0, 0, width, height);
   float increment = PI/23;      
   float vel = 2.7;  
          
   if (sin(direction)<0) { //if heading down
-    if ((pos.y > height - boxSize) ) { //if past lower limit
-      if (cos(direction)>0 && pos.x < width-boxSize) direction+=increment; //if towards right, turn more right
-      if (cos(direction)<=0 && pos.x > boxSize) direction-=increment; //if towards left, turn more left
+    if ((y > height - boxSize) ) { //if past lower limit
+      if (cos(direction)>0 && x < width-boxSize) direction+=increment; //if towards right, turn more right
+      if (cos(direction)<=0 && x > boxSize) direction-=increment; //if towards left, turn more left
     }  
-    if (pos.x > width - boxSize) direction -= increment;  //if past right limit turn down        
-    if (pos.x <  boxSize) direction += increment;  //if past left limit turn down
+    if (x > width - boxSize) direction -= increment;  //if past right limit turn down        
+    if (x <  boxSize) direction += increment;  //if past left limit turn down
   }
   
   if (sin(direction)>0) {//if heading up
-    if (pos.y < boxSize) { //if past upper limit
-      if (cos(direction)>0 && pos.x < width - boxSize) direction-=increment; //if towards right, turn more right
-      if (cos(direction)<=0 && pos.x > boxSize) direction +=increment;
+    if (y < boxSize) { //if past upper limit
+      if (cos(direction)>0 && x < width - boxSize) direction-=increment; //if towards right, turn more right
+      if (cos(direction)<=0 && x > boxSize) direction +=increment;
     }
-    if (pos.x < boxSize) direction -= increment;  //if past left limit turn up
-    if (pos.x > width - boxSize) direction += increment;  //if past right limit turnup
+    if (x < boxSize) direction -= increment;  //if past left limit turn up
+    if (x > width - boxSize) direction += increment;  //if past right limit turnup
   }    
-  
-  float rand=PI/40;
-  direction+=random(-rand, rand);
+    
 }
   
   void draw() {

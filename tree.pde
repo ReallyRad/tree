@@ -1,41 +1,65 @@
-int lastTime;
-int interval;
-int internode;
+int lastTime, interval, internode, boxSize;
 boolean debug;
-
 TreeNode<PlantNode> root;
+TreeNode<PlantNode> node1;
+ArrayList<TreeNode<PlantNode>> nodes;
 
 void setup() {      
   size(1366/2, 768);
   debug = false;
+  lastTime = millis();
+  nodes = new ArrayList<TreeNode<PlantNode>>();
+  root = new TreeNode<PlantNode>(new PlantNode(width/2, 0, PI/2));
+  node1 = grow(root, PI/6.f);  
 }
 
 void draw() {
   interval = 2000;
   internode = 50;
-  background(255);
-  root = getSet();  
-  translate(0, 105);
-  for (TreeNode<PlantNode> node : root) {  
+  boxSize = 400;
+  background(255);  
+  translate(0, 105);  
+  
+  for (TreeNode<PlantNode> node : node1) {  
     node.data.draw();
     fill(0,0,255);
     if (node.children.size() > 0) line(node.data.x, node.data.y, node.children.get(0).data.x, node.children.get(0).data.y); 
     if (node.children.size() > 1) line(node.data.x, node.data.y, node.children.get(1).data.x, node.children.get(1).data.y);    
   }      
-}
-
-float direction(TreeNode<PlantNode>){
-  return 
+  
+  if (millis()-lastTime > interval) {
+    lastTime=millis();
+    ArrayList<TreeNode<PlantNode>>  leaves = new ArrayList<TreeNode<PlantNode>>();
+    for (TreeNode<PlantNode> node : root) {  
+      if (node.isLeaf()) {
+        leaves.add(node);
+      }      
+    }
+    println("leaves size : " + leaves.size());
+    for (TreeNode<PlantNode> node : leaves) {
+      if (random(0,5)>4.8) { // 1 out of 5 times, split
+        println("split!");
+        TreeNode<PlantNode> node_left = split(node, 0, node.parent.data.direction);
+        TreeNode<PlantNode> node_right = split(node, 1, node.parent.data.direction);
+      }
+      else { //4 out of 5 times, grow
+        println("grow");
+        float rand=PI/40;        
+        TreeNode<PlantNode> new_node = grow(node, node.parent.data.direction+random(-rand, rand));                
+      }
+    }
+  }
+    
 }
 
 TreeNode<PlantNode> getSet() {
-  TreeNode<PlantNode> root = new TreeNode<PlantNode>(new PlantNode(width/2, 0, PI/2));             
-    TreeNode<PlantNode> node1 = grow(root, PI/6.f);      
+               
+    /*      
     TreeNode<PlantNode> node20 = grow(node1, -PI/6.f);                  
     TreeNode<PlantNode> node211 = grow(node20, -PI/6.f);
     TreeNode<PlantNode> node30 = grow(node211, -PI/4.f);
     TreeNode<PlantNode> node300 = split(node30, 0, PI/4.f);      
-    TreeNode<PlantNode> node301 = split(node30, 1, PI/4.f);
+    TreeNode<PlantNode> node301 = split(node30, 1, PI/4.f);*/    
     //TreeNode<PlantNode> node301 = spli(node301, 1, PI/2-PI/4);
 return root;
 }
