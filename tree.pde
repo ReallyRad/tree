@@ -5,27 +5,28 @@ TreeNode<PlantNode> node1;
 ArrayList<TreeNode<PlantNode>> nodes;
 
 void setup() {      
-  size(1366/2, 768);
+  size(1366/2, 700, OPENGL);
   debug = false;
   lastTime = millis();
   nodes = new ArrayList<TreeNode<PlantNode>>();
-  root = new TreeNode<PlantNode>(new PlantNode(width/2, 0, PI/2));
+  root = new TreeNode<PlantNode>(new PlantNode(width/2, height/2, PI/2));
   node1 = grow(root, PI/6.f);  
 }
 
 void draw() {
-  interval = 2000;
-  internode = 50;
-  boxSize = 400;
-  background(255);  
-  translate(0, 105);  
-  
-  for (TreeNode<PlantNode> node : node1) {  
+  interval = 50;
+  internode = 5;
+  boxSize = 80;
+  //background(255,255);
+  fill(255,0);
+  rect(0,0,width,height);  
+  drawBox();  
+  /*for (TreeNode<PlantNode> node : node1) {  
     node.data.draw();
     fill(0,0,255);
     if (node.children.size() > 0) line(node.data.x, node.data.y, node.children.get(0).data.x, node.children.get(0).data.y); 
     if (node.children.size() > 1) line(node.data.x, node.data.y, node.children.get(1).data.x, node.children.get(1).data.y);    
-  }      
+  } */     
   
   if (millis()-lastTime > interval) {
     lastTime=millis();
@@ -35,21 +36,29 @@ void draw() {
         leaves.add(node);
       }      
     }
-    println("leaves size : " + leaves.size());
+    //println("leaves size : " + leaves.size());
     for (TreeNode<PlantNode> node : leaves) {
-      if (random(0,5)>4.8) { // 1 out of 5 times, split
-        println("split!");
-        TreeNode<PlantNode> node_left = split(node, 0, node.parent.data.direction);
-        TreeNode<PlantNode> node_right = split(node, 1, node.parent.data.direction);
+      if (random(0,5)>4.95) { // 1 out of 5 times, split
+        //println("split!");
+        float rand = random(-PI/3, PI/3);
+        TreeNode<PlantNode> node_left = split(node, 0, node.parent.data.direction+rand);
+       TreeNode<PlantNode> node_right = split(node, 1, node.parent.data.direction-rand);
       }
       else { //4 out of 5 times, grow
-        println("grow");
-        float rand=PI/40;        
-        TreeNode<PlantNode> new_node = grow(node, node.parent.data.direction+random(-rand, rand));                
+        //println("grow");               
+        TreeNode<PlantNode> new_node = grow(node, node.parent.data.direction);                
       }
     }
   }
     
+}
+
+void drawBox() {
+  stroke(0);
+  line(boxSize, boxSize, width-boxSize, boxSize);
+  line(boxSize, boxSize, boxSize, height-boxSize);
+  line(width-boxSize, boxSize, width-boxSize, height-boxSize);
+  line(boxSize, height-boxSize, width-boxSize, height-boxSize);
 }
 
 TreeNode<PlantNode> getSet() {
@@ -68,7 +77,7 @@ TreeNode<PlantNode> grow(TreeNode<PlantNode> t, float d) {
   float direction = t.data.direction;
   float x = t.getData().x;
   float y = t.getData().y;    
-  PlantNode plantnode = new PlantNode(x+cos(direction)*internode, y+sin(direction)*internode, direction+d);
+  PlantNode plantnode = new PlantNode(x+cos(direction)*internode, y-sin(direction)*internode, direction);
   return t.addChild(plantnode);
 }
   
