@@ -13,7 +13,7 @@ class PlantNode {
   }
   
 void setDirection(float d) { //set direction given direction of previous node  
-  float increment = PI/3;         
+  float increment = PI/30;         
   //println("setting direction, previous = " + degrees(d) );
   direction = d;
   if (sin(direction)<0) { //if heading down
@@ -40,15 +40,15 @@ void setDirection(float d) { //set direction given direction of previous node
 }
   
   void draw() {
-    fill(195);
-    stroke(155);
-    ellipse(x, y, 10, 10);
+ /*   noStroke();
+    fill((sin((float)millis()/1000)+1)*125);    
+    ellipse(x, y, 15+random(-2,2), 15+random(-2,2));
     if (debug == true) {
       stroke(255,0,0);
       line(x, y, x+0.5*internode*cos(direction), y-0.5*internode*sin(direction)); //draw node direction
       stroke (155);      
     }
-    
+   */ 
   }
   
 }
